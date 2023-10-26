@@ -18,3 +18,8 @@ class ListaEnlazada:
            current = current.next
 
         current.next = new_node
+
+     def insertar_inicio(self, datos):
+        new_node = Node(datos)
+        new_node.next = self.head
+        self.head = new_node
