@@ -1,1 +1,113 @@
+# funcioncitas
 
+# añadir
+def add_car(available_cars, car):
+    return available_cars + (car,)
+
+
+# mostrar
+def display_cars(cars):
+    for car in cars:
+        print(car)
+
+
+# rentar
+def rent_car(available_cars, rented_cars, total_income, condition_func):
+    for i, car in enumerate(available_cars):
+        if condition_func(car):
+            total_income += car[4]
+            rented_cars += (available_cars[i],)
+            available_cars = available_cars[:i] + available_cars[i + 1:]
+            return available_cars, rented_cars, total_income, rented_cars[-1]
+    return available_cars, rented_cars, total_income, None
+
+
+# devolver
+def return_car(available_cars, rented_cars, car):
+    available_cars += (car,)
+    rented_cars = tuple(c for c in rented_cars if c != car)
+    return available_cars, rented_cars
+
+
+# buscar
+
+def buscar_en_tuplas_anidadas(tupla, valor_buscado):
+    for elemento in tupla:
+        if isinstance(elemento, tuple):
+            # Si el elemento es una tupla anidada, realiza una búsqueda recursiva
+            resultado = buscar_en_tuplas_anidadas(elemento, valor_buscado)
+            if resultado:
+                return resultado
+        elif elemento == valor_buscado:
+            # Si encontramos el valor buscado, lo retornamos
+            return True
+    return False
+
+
+def buscar_en_tuplas_anidadas(tupla, valor_buscado):
+    for elemento in tupla:
+        if isinstance(elemento, tuple):
+            # Si el elemento es una tupla anidada, realiza una búsqueda recursiva
+            resultado = buscar_en_tuplas_anidadas(elemento, valor_buscado)
+            if resultado:
+                return resultado
+        elif elemento == valor_buscado:
+            # Si encontramos el valor buscado, lo retornamos
+            return True
+    return False
+
+
+available_cars = ()
+rented_cars = ()
+total_income = 0
+
+available_cars = add_car(available_cars, ("123", "Toyota", "Corolla", 2010, 50))
+available_cars = add_car(available_cars, ("456", "Honda", "Civic", 2012, 60))
+
+# menu
+pregunta = 1
+while pregunta != 7:
+    pregunta = int(input(
+        "que desea hacer?" "\n" "(1) agregar un auto ""\n""(2) mostrar lista ""\n""(3)alquilar un auto ""\n""(4)devolver un auto ""\n""(5)ingreso total obtenido ""\n""(6)cambiazo ""\n""(7)salir ""\n"" : "))
+
+    if pregunta == 1:
+        Numero_de_serie = int(input("ingrese el numero de serie: "))
+        Marca = str(input("ingrese la marca: "))
+        Modelo = str(input("ingrese el modelo: "))
+        Año_de_fabricacion = int(input("ingrese el año de fabricacion: "))
+        Tarifa = int(input("ingrese la tarifa diaria de alquiler: "))
+
+        available_cars = add_car(available_cars, (Numero_de_serie, Marca, Modelo, Año_de_fabricacion, Tarifa))
+
+    if pregunta == 2:
+        print("\n")
+        print("carros disponibles: ")
+        display_cars(available_cars)
+        print("carros alquilados: ")
+        display_cars(rented_cars)
+        print("\n")
+
+    if pregunta == 3:
+        cualcarro = str(input("que carro va a alquilar: "))
+
+        resultado = buscar_en_tuplas_anidadas(available_cars, cualcarro)
+
+        if resultado:
+            print(f"El carro {cualcarro} está presente en la lista de carros.")
+            available_cars, rented_cars, total_income, rented_car = rent_car(available_cars, rented_cars, total_income,
+                                                                             lambda car: car[1] == cualcarro)
+            print("melo alkilaó")
+        else:
+            print(f"Papi el carro {cualcarro} no está en la lista de carros.")
+
+        print("Autos alquilados:")
+        display_cars(rented_cars)
+
+    if pregunta == 4:
+        available_cars, rented_cars = return_car(available_cars, rented_cars, rented_car)
+
+    if pregunta == 5:
+        print(total_income)
+
+    if pregunta ==6:
+        pass
